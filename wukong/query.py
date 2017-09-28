@@ -118,18 +118,20 @@ class Comparator(SolrNode):
 
         # EQUAL
         if operator == 'eq':
-            if value is None:
+            if value is None or value == '':
                 query_string = "-%s:[* TO *]" % key
-            elif isinstance(value, six.string_types):
+            elif (isinstance(value, six.string_types) and
+                  not (value[0] == '(' or value[0] == '[')):
                 query_string = "%s:\"%s\"" % (key, value)
             else:
                 query_string = "%s:%s" % (key, value)
 
         # NOT EQUAL
         elif operator == 'ne':
-            if value is None:
+            if value is None or value == '':
                 query_string = "%s:*" % key
-            elif isinstance(value, six.string_types):
+            elif (isinstance(value, six.string_types) and
+                  not (value[0] == '(' or value[0] == '[')):
                 query_string += "-%s:\"%s\"" % (key, value)
             else:
                 query_string += "-%s:%s" % (key, value)

@@ -27,6 +27,8 @@ class TestNode(ParameterizedTestCase):
             ("eq", "name", "Test Name", "name:\"Test Name\"", None),
             ("eq", "name", 100, "name:100", None),
             ("eq", "name", None, "-name:[* TO *]", None),
+            ("eq", "name", "", "-name:[* TO *]", None),
+            ("eq", "name", "([2017-09-13T00:00:00Z TO 2017-09-17T23:59:59Z])", "name:([2017-09-13T00:00:00Z TO 2017-09-17T23:59:59Z])", None),
             ("in", "name", ["Test1", "Test2"], "name:(\"Test1\" \"Test2\")", None),
             ("in", "name", [1, 2], "name:(1 2)", None),
             ("in", "name", ["Test1", None], "name:(\"Test1\")", None),
@@ -35,6 +37,8 @@ class TestNode(ParameterizedTestCase):
             ("ne", "name", "Test Name", "-name:\"Test Name\"", None),
             ("ne", "name", 100, "-name:100", None),
             ("ne", "name", None, "name:*", None),
+            ("ne", "name", "", "name:*", None),
+            ("ne", "name", "([2017-09-13T00:00:00Z TO 2017-09-17T23:59:59Z])", "-name:([2017-09-13T00:00:00Z TO 2017-09-17T23:59:59Z])", None),
             ("wc", "name", "Test Name", "name:*Test Name*", None),
             ("wc", "name", "Test*", "name:Test*", None),
             ("wc", "name", "*Test", "name:*Test", None),
@@ -44,7 +48,7 @@ class TestNode(ParameterizedTestCase):
             ("le", "name", 100, "name:[* TO 100]", None),
             ("le", "name", None, "name:[* TO *]", None),
             ("op", "name", "Test", None, "The operator:op is not supported"),
-            ("op", None, "Test", "", None)
+            ("op", None, "Test", "", None),
         )
     )
     def test_node_comp_node_parsed_solr_query(self, operator, key, value,
